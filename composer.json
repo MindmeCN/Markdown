@@ -1,5 +1,6 @@
 {
     "name": "mindmecn/markdown-bundle",
+    "version": "master",
     "keywords": ["Claroline", "Plugin"],
     "homepage": "http://www.claroline.net",
     "type": "claroline-plugin",
