@@ -1,12 +1,12 @@
 {
     "name": "mindmecn/markdown-bundle",
-    "version": "master",
+    "version": "dev-master",
     "keywords": ["Claroline", "Plugin"],
     "homepage": "http://www.claroline.net",
     "type": "claroline-plugin",
     "license": "GPL-3.0+",
     "require": {
-        "php": ">=5.4.1",
+        "php": ">=7.1",
         "claroline/core-bundle": "~5.0"
     },
     "autoload": {
