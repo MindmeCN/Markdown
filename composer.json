@@ -11,6 +11,5 @@
     },
     "autoload": {
         "psr-4": { "Mindmecn\\MarkdownBundle": "plugin/markdown" }
-    },
-    "target-dir": "Mindmecn/MarkdownBundle"
+    }
 }
