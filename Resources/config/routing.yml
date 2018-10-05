@@ -1,0 +1,35 @@
+## YAML Template.
+markdown:
+    resource: "@MindmecnMarkdownBundle/Controller/ResourceMarkdownController.php"
+    type: annotation
+    prefix: /markdown
+   
+mklab:
+    resource: "@MindmecnMarkdownBundle/Controller/ResourceMklabController.php"
+    type: annotation
+    prefix: /markdown
+    
+mknote:
+    resource: "@MindmecnMarkdownBundle/Controller/ResourceMknoteController.php"
+    type: annotation
+    prefix: /markdown
+    
+mkppt:
+    resource: "@MindmecnMarkdownBundle/Controller/ResourceMkpptController.php"
+    type: annotation
+    prefix: /markdown
+    
+mktemplate:
+    resource: "@MindmecnMarkdownBundle/Controller/ResourceMktemplateController.php"
+    type: annotation
+    prefix: /markdown
+    
+     
+    
+# JSON API
+markdown_api:
+    resource: "@MindmecnMarkdownBundle/Controller/API"
+    prefix: apiv2
+    type: api
+    options:
+        expose: true
