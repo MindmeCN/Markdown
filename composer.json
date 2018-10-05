@@ -12,4 +12,9 @@
     "autoload": {
         "psr-4": { "Mindmecn\\MarkdownBundle\\": "" }
     }
+    "extra": {
+        "installer-paths": {
+            "markdown/": ["vendor:mindmecn"]
+        }
+    }
 }
