@@ -11,10 +11,5 @@
     },
     "autoload": {
         "psr-4": { "Mindmecn\\MarkdownBundle\\": "plugin/markdown" }
-    },
-    "extra": {
-        "installer-paths": {
-            "claroline/distribution/": ["vendor:mindmecn"]
-        }
     }
 }
