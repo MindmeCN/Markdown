@@ -10,6 +10,6 @@
         "claroline/core-bundle": "^11.0"
     },
     "autoload": {
-        "psr-4": { "Mindmecn\\MarkdownBundle\\": "plugin/markdown" }
+        "psr-4": { "Mindmecn\\MarkdownBundle\\": "" }
     }
 }
