@@ -14,7 +14,7 @@
     },
     "extra": {
         "installer-paths": {
-            "markdown/": ["vendor:mindmecn"]
+            "claroline/distribution/": ["vendor:mindmecn"]
         }
     }
 }
