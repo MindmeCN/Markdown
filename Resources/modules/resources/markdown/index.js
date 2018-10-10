@@ -1,8 +1,8 @@
 
-import {MarkdownResource} from '#/plugin/markdown/resources/markdown/containers/resource'
+import {MarkdownResource} from '&/mindmecn/markdown-bundle/resources/markdown/containers/resource'
 
 /**
- * Markdown resource application.
+ * Text resource application.
  */
 export const App = () => ({
   component: MarkdownResource

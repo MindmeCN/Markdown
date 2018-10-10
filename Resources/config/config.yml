@@ -4,30 +4,30 @@ plugin:
     resources:
         -   class: Mindmecn\MarkdownBundle\Entity\Markdown
             name: markdown
-            tags: [content]
-            is_exportable: false
+            tags: [content,lab]
+ #           is_exportable: true
             icon: markdown.png
   
         -   class: Mindmecn\MarkdownBundle\Entity\Markdown
             name: mkppt
-            tags: [content]
-            is_exportable: false
+            tags: [content,lab]
+ #           is_exportable: false
             icon: mkppt.png
             
         -   class: Mindmecn\MarkdownBundle\Entity\Markdown
             name: mknote
-            tags: [content]
-            is_exportable: false
+            tags: [content,lab]
+#            is_exportable: false
             icon: mknote.png
             
         -   class: Mindmecn\MarkdownBundle\Entity\Markdown
             name: mklab
-            tags: [content]
-            is_exportable: false
+            tags: [content,lab]
+#            is_exportable: false
             icon: mklab.png
             
         -   class: Mindmecn\MarkdownBundle\Entity\Markdown
             name: Mktemplate
-            tags: [content]
-            is_exportable: false
-            icon: Mktemplate.png
+            tags: [content,lab]
+#            is_exportable: false
+            icon: mktemplate.png

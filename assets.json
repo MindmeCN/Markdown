@@ -1,0 +1,8 @@
+{
+  "webpack": {
+    "entry": {
+      "markdown-resource": "resources/markdown"
+    }
+  }
+}
+

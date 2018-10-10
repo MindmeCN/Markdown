@@ -1,3 +1,7 @@
 {
-    "markdown": "markdown"
+    "markdown": "markdown",
+    "mknote": "mknote",
+    "mklab": "mklab",
+    "mkppt": "mkppt",
+    "mktemplate": "mktemplate"
 }

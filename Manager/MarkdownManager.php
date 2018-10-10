@@ -20,6 +20,7 @@ use Mindmecn\MarkdownBundle\Event\Log\LogEditResourceMarkdownEvent;
 use JMS\DiExtraBundle\Annotation as DI;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Claroline\CoreBundle\Entity\Widget\WidgetInstance;
+use Claroline\CoreBundle\Entity\User;
 
 /**
  * @DI\Service("claroline.manager.markdown_manager")
@@ -34,6 +35,7 @@ class MarkdownManager
 
     /** @var UserManager */
     private $userManager;
+    
 
     ///** @var markdownDisplayConfigRepo */
     //private $markdownDisplayConfigRepo;
@@ -70,8 +72,8 @@ class MarkdownManager
         $revision->setUser($user);
         $markdown = new Markdown();
         $markdown->setName($title);
-        $revision->setMarkdown($Markdown);
-        $this->om->persist($Markdown);
+        $revision->setMarkdown($markdown);
+        $this->om->persist($markdown);
         $this->om->persist($revision);
         $this->om->flush();
 
@@ -87,6 +89,7 @@ class MarkdownManager
 
     public function createRevision(Markdown $markdown, $content, $htmlcontent, User $user = null)
     {
+      
         $version = $markdown->getVersion() + 1;
 
         $revision = new Revision();
@@ -99,12 +102,13 @@ class MarkdownManager
         $this->om->persist($revision);
         $this->om->persist($markdown);
         $this->om->flush();
+         
 
         $workspace = $markdown->getResourceNode()->getWorkspace();
         $usersToNotify = $workspace ?
             $this->userManager->getUsersByWorkspaces([$workspace], null, null, false) :
             [];
-        $event = new LogEditResourceMarkdownEvent($Markdown->getResourceNode(), $usersToNotify);
+        $event = new LogEditResourceMarkdownEvent($markdown->getResourceNode(), $usersToNotify);
         $this->eventDispatcher->dispatch('log', $event);
 
         return $revision;

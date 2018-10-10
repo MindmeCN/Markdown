@@ -1,16 +1,16 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
+import classes from 'classnames'
 
-import {HtmlText} from '#/main/core/layout/components/html-text'
-
-import {selectors} from '#/plugin/markdown/resources/markdown/store'
-import {Markdown as MarkdownTypes} from '#/plugin/markdown/resources/markdown/prop-types'
+import {selectors} from '&/mindmecn/markdown-bundle/resources/markdown/store'
+import {Markdown as MarkdownTypes} from '&/mindmecn/markdown-bundle/resources/markdown/prop-types'
+import {MkView} from '&/mindmecn/markdown-bundle/resources/markdown/player/components/mkview'
 
 const PlayerComponent = props =>
-  <HtmlText>
-    {props.text.content}
-  </HtmlText>
+ <div className={classes('markdown_content')}>
+ <MkView/>
+ </div>
 
 PlayerComponent.propTypes = {
   markdown: T.shape(MarkdownTypes.propTypes).isRequired

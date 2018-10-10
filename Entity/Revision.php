@@ -90,7 +90,7 @@ class Revision
 
     public function getMarkdown()
     {
-        return $this->Markdown;
+        return $this->markdown;
     }
 
     public function setContent($content)

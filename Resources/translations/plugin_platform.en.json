@@ -1,4 +1,8 @@
 {
     "general": "general",
-    "markdown": "markdown"  
+    "markdown": "markdown",
+    "mklab": "mklab",
+    "mknote": "mknote",
+    "mkppt": "mkppt",
+    "mktempate": "mktemplate"
 }

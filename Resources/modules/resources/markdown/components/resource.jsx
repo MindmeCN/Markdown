@@ -3,11 +3,12 @@ import React from 'react'
 import {Routes} from '#/main/app/router'
 import {ResourcePage} from '#/main/core/resource/containers/page'
 
-import {Player} from '#/plugin/markdown/resources/markdown/player/components/player'
-import {Editor} from '#/plugin/markdown/resources/markdown/editor/components/editor'
+
+import {Player} from '&/mindmecn/markdown-bundle/resources/markdown/player/components/player'
+import {Editor} from '&/mindmecn/markdown-bundle/resources/markdown/editor/components/editor'
 
 const MarkdownResource = () =>
-  <ResourcePage>
+   <ResourcePage>
     <Routes
       routes={[
         {
@@ -16,12 +17,13 @@ const MarkdownResource = () =>
           exact: true
         }, {
           path: '/edit',
-          component: Editor
+          component: Editor,
+          active: true,
         }
       ]}
     />
   </ResourcePage>
-
+  
 export {
   MarkdownResource
 }

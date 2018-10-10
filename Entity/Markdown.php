@@ -106,10 +106,10 @@ class Markdown extends AbstractResource
     public function getContent()
     {
         $content = null;
-        if (!empty($this->revisions)) {
+        if (0 < $this->revisions->count()) {
             $content = $this->revisions->get(0)->getContent();
         }
- 
+        
         return $content;
     }
    
@@ -121,10 +121,14 @@ class Markdown extends AbstractResource
       public function getHtmlContent()
     {
        $htmlcontent = null;
-       if (!empty($this->revisions)) {
+       if (0 < $this->revisions->count()) {
            $htmlcontent = $this->revisions->get(0)->getHtmlContent();
         }
-
+ 
+       if (empty($htmlcontent)){
+           $htmlcontent = 'undefine';
+       }
+  
           return $htmlcontent;
      }
      

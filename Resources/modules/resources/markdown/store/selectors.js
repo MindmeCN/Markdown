@@ -9,6 +9,7 @@ const markdown = createSelector(
   (resource) => resource.markdown
 )
 
+
 export const selectors = {
   STORE_NAME,
   resource,

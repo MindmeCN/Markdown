@@ -1,0 +1,11 @@
+{% extends "ClarolineCoreBundle:Resource:layout.html.twig" %}
+
+{% block content %}
+    <div
+        class="page-container markdown-container"
+        data-resource-node="{{ _resource.resourceNode | api_serialize | json_encode | raw | escape }}"
+        data-markdown="{{ markdown | api_serialize | json_encode | raw | escape }}"
+    >
+    </div>
+{% endblock %}
+

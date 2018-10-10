@@ -11,117 +11,90 @@
 
 namespace Mindmecn\MarkdownBundle\Listener\Resource;
 
+use Claroline\AppBundle\API\SerializerProvider;
+use Claroline\AppBundle\Persistence\ObjectManager;
 use Mindmecn\MarkdownBundle\Entity\Revision;
 use Mindmecn\MarkdownBundle\Entity\Markdown;
-use Claroline\CoreBundle\Event\CopyResourceEvent;
-use Claroline\CoreBundle\Event\CreateFormResourceEvent;
-use Claroline\CoreBundle\Event\CreateResourceEvent;
-use Claroline\CoreBundle\Event\DeleteResourceEvent;
-use Claroline\CoreBundle\Event\OpenResourceEvent;
+use Claroline\CoreBundle\Event\Resource\CopyResourceEvent;
+use Claroline\CoreBundle\Event\Resource\DeleteResourceEvent;
 use Claroline\CoreBundle\Event\Resource\LoadResourceEvent;
-use Mindmecn\MarkdownBundle\Form\MarkdownType;
-use Claroline\ScormBundle\Event\ExportScormResourceEvent;
+use Claroline\CoreBundle\Event\Resource\OpenResourceEvent;
 use JMS\DiExtraBundle\Annotation as DI;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @DI\Service
  */
-class MarkdownListener implements ContainerAwareInterface {
+class MarkdownListener
+{
+    /** @var ObjectManager */
+    private $om;
 
-    /** @var ContainerInterface */
-    private $container;
+    /** @var TwigEngine */
+    private $templating;
+
+    /** @var SerializerProvider */
+    private $serializer;
 
     /**
+     * MarkdownListener constructor.
+     *
      * @DI\InjectParams({
-     *     "container" = @DI\Inject("service_container")
+     *     "om"         = @DI\Inject("claroline.persistence.object_manager"),
+     *     "templating" = @DI\Inject("templating"),
+     *     "serializer" = @DI\Inject("claroline.api.serializer")
      * })
      *
-     * @param ContainerInterface $container
+     * @param ObjectManager      $om
+     * @param TwigEngine         $templating
+     * @param SerializerProvider $serializer
      */
-    public function setContainer(ContainerInterface $container = null) {
-        $this->container = $container;
+    public function __construct(
+        ObjectManager $om,
+        TwigEngine $templating,
+        SerializerProvider $serializer)
+    {
+        $this->om = $om;
+        $this->templating = $templating;
+        $this->serializer = $serializer;
     }
 
     /**
-     * @DI\Observe("create_form_markdown")
+     * Loads a Markdown resource.
      *
-     * @param CreateFormResourceEvent $event
+     * @DI\Observe("resource.markdown.load")
+     *
+     * @param LoadResourceEvent $event
      */
-    public function onCreateForm(CreateFormResourceEvent $event) {
+    public function load(LoadResourceEvent $event)
+    {
+        $event->setData([
+            'markdown' => $this->serializer->serialize($event->getResource()),
+        ]);
         
-        $formFactory = $this->container->get('form.factory');
-        $markdownType = new MarkdownType('markdown_' . rand(0, 1000000000));
-        $form = $formFactory->create($markdownType);
-        $response = $this->container->get('templating')->render(
-         'MindmecnMarkdownBundle:Markdown:createForm.html.twig', [
-            'form' => $form->createView(),
-            'resourceType' => 'markdown',
-                ]
-        );  
-        $event->setResponseContent($response);
-        $event->stopPropagation();
+         $event->stopPropagation();
     }
 
     /**
-     * @DI\Observe("create_markdown")
+     * @DI\Observe("open_markdown")
      *
-     * @param CreateResourceEvent $event
+     * @param OpenResourceEvent $event
      */
-    public function onCreate(CreateResourceEvent $event) {
+    public function open(OpenResourceEvent $event)
+    {
+        $markdown = $event->getResource();
         
-        $request = $this->container->get('request');
-        $em = $this->container->get('doctrine.orm.entity_manager');
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
-        $keys = array_keys($request->request->all());
-        $id = array_pop($keys);
-        $form = $this->container->get('form.factory')->create(new MarkdownType($id));
-        $form->handleRequest($request);
- 
-        if ($form->isValid()) {
         
-            $varArray = $form->getData();
-             
-            $published = $form->get('published')->getData();
-            $event->setPublished($published);
-            $revision = new Revision();
-            $revision->setContent($varArray[content]);
-            $revision->setHtmlcontent($varArray[htmlcontent]);
-            $revision->setUser($user);
-            $markdown = new Markdown();
-            $markdown->setName($varArray[name]);
-            $markdown->setDefaultMode($varArray[defaultMode]);
-            
-            $revision->setMarkdown($markdown);
-            $em->persist($markdown);
-            $em->persist($revision);
-            $event->setResources([$markdown]);
-            $event->stopPropagation();
-
-            return;
-        }
-
-        $errorForm = $this->container->get('form.factory')->create(new MarkdownType('markdown_' . rand(0, 1000000000)));
-        $errorForm->setData($form->getData());
-        $children = $form->getIterator();
-        $errorChildren = $errorForm->getIterator();
-
-        foreach ($children as $key => $child) {
-            $errors = $child->getErrors();
-            foreach ($errors as $error) {
-                $errorChildren[$key]->addError($error);
-            }
-        }
-
-        $content = $this->container->get('templating')->render(
-                'MindmecnMarkdownBundle:Markdown:createForm.html.twig', [
-            'form' => $errorForm->createView(),
-            'resourceType' => 'markdown',
-                ]
+        $content = $this->templating->render(
+            'MindmecnMarkdownBundle:markdown:index.html.twig',
+            [
+                'markdown' => $markdown,
+                '_resource' => $markdown,
+            ]
         );
-        $event->setErrorFormContent($content);
+
+        $event->setResponse(new Response($content));
         $event->stopPropagation();
     }
 
@@ -130,123 +103,26 @@ class MarkdownListener implements ContainerAwareInterface {
      *
      * @param CopyResourceEvent $event
      */
-    public function onCopy(CopyResourceEvent $event) {
-        $em = $this->container->get('doctrine.orm.entity_manager');
+    public function copy(CopyResourceEvent $event)
+    {
+        /** @var Markdown $resource */
         $resource = $event->getResource();
         $revisions = $resource->getRevisions();
         $copy = new Markdown();
         $copy->setVersion($resource->getVersion());
 
+        /** @var Revision $revision */
         foreach ($revisions as $revision) {
             $rev = new Revision();
             $rev->setVersion($revision->getVersion());
             $rev->setContent($revision->getContent());
             $rev->setUser($revision->getUser());
             $rev->setMarkdown($copy);
-            $em->persist($rev);
+
+            $this->om->persist($rev);
         }
 
         $event->setCopy($copy);
-    }
-
-    /**
-     * Loads a Markdown resource.
-     *
-     * @DI\Observe("load_markdown")
-     *
-     * @param LoadResourceEvent $event
-     */
-    public function onLoad(LoadResourceEvent $event) {
-        $event->setAdditionalData([
-            'markdown' => $this->container->get('claroline.api.serializer')->serialize($event->getResource()),
-        ]);
-
-        $event->stopPropagation();
-    }
-
-    /**
-     * @DI\Observe("open_markdown")
-     *
-     * @param OpenResourceEvent $event
-     */
-    public function onOpen(OpenResourceEvent $event) {
-        $markdown = $event->getResource();
-        $defaultmode = $markdown->getDefaultMode();
-
-        switch ($defaultmode) {
-
-            case 1:
-                $content = $this->container->get('templating')->render(
-                        'MindmecnMarkdownBundle:Markdown:index_lab.html.twig', [
-                    'markdown' => $markdown,
-                    '_resource' => $markdown,
-                ]);
-
-                break;
-            case 2:
-                $content = $this->container->get('templating')->render(
-                        'MindmecnMarkdownBundle:Markdown:index_note.html.twig', [
-                    'markdown' => $markdown,
-                    '_resource' => $markdown,
-                ]);
-                break;
-            case 3:
-                $content = $this->container->get('templating')->render(
-                        'MindmecnMarkdownBundle:Markdown:index_ppt.html.twig', [
-                    'markdown' => $markdown,
-                    '_resource' => $markdown,
-                ]);
-                break;
-            case 4:
-                $content = $this->container->get('templating')->render(
-                        'MindmecnMarkdownBundle:Markdown:index_pptsrv.html.twig', [
-                    'markdown' => $markdown,
-                    '_resource' => $markdown,
-                ]);
-                break;
-            default:
-                $content = $this->container->get('templating')->render(
-                        'MindmecnMarkdownBundle:Markdown:index.html.twig', [
-                    'markdown' => $markdown,
-                    '_resource' => $markdown,
-                ]);
-        }
-
-        $response = new Response($content);
-        $response->headers->set('Content-Type', 'text/html');
-        $response->headers->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, PATCH, OPTIONS');
-        $response->headers->set('Access-Control-Allow-Credentials', true);
-        $event->setResponse($response);
-        $event->stopPropagation();
-    }
-
-    /**
-     * @DI\Observe("export_scorm_markdown")
-     *
-     * @param ExportScormResourceEvent $event
-     */
-    public function onExportScorm(ExportScormResourceEvent $event) {
-        $markdown = $event->getResource();
-        $revisionRepo = $this->container->get('doctrine.orm.entity_manager')
-                ->getRepository('MindmecnMarkdownBundle:Revision');
-
-        $markdownContent = $revisionRepo->getLastRevision($markdown)->getContent();
-        $parsed = $this->container->get('claroline.scorm.rich_text_exporter')->parse($markdownContent);
-
-        $template = $this->container->get('templating')->render(
-                'MindmecnMarkdown:Markdown:scorm-export.html.twig', [
-            'markdown' => $parsed['markdown'],
-            '_resource' => $markdown,
-                ]
-        );
-
-        // Set export template
-        $event->setTemplate($template);
-        $event->setEmbedResources($parsed['resources']);
-
-        $event->stopPropagation();
     }
 
     /**
@@ -254,8 +130,8 @@ class MarkdownListener implements ContainerAwareInterface {
      *
      * @param DeleteResourceEvent $event
      */
-    public function onDelete(DeleteResourceEvent $event) {
+    public function delete(DeleteResourceEvent $event)
+    {
         $event->stopPropagation();
     }
-
 }

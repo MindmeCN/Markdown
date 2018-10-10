@@ -7,22 +7,22 @@ markdown:
 mklab:
     resource: "@MindmecnMarkdownBundle/Controller/ResourceMklabController.php"
     type: annotation
-    prefix: /markdown
+    prefix: /mklab
     
 mknote:
     resource: "@MindmecnMarkdownBundle/Controller/ResourceMknoteController.php"
     type: annotation
-    prefix: /markdown
+    prefix: /mknote
     
 mkppt:
     resource: "@MindmecnMarkdownBundle/Controller/ResourceMkpptController.php"
     type: annotation
-    prefix: /markdown
+    prefix: /mkppt
     
 mktemplate:
     resource: "@MindmecnMarkdownBundle/Controller/ResourceMktemplateController.php"
     type: annotation
-    prefix: /markdown
+    prefix: /mktempate
     
      
     

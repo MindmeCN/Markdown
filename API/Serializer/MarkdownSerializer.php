@@ -9,7 +9,7 @@ use JMS\DiExtraBundle\Annotation as DI;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
- * @DI\Service("claroline.serializer.markdown")
+ * @DI\Service("claroline.serializer.resource_markdown")
  * @DI\Tag("claroline.serializer")
  */
 class MarkdownSerializer
@@ -42,7 +42,7 @@ class MarkdownSerializer
 
     public function getSchema()
     {
-        return '#/plugin/markdown/markdown.json';
+        return '#/mindme/markdown-bundle/markdown.json';
     }
 
     /**
