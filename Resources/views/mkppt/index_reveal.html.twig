@@ -1,0 +1,135 @@
+{% import 'ClarolineCoreBundle::macros.html.twig' as macros %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv='Content-Type' content='textml; charset=UTF-8'/> 
+        <title>江苏晓创教育</title> 
+        <meta name='description' content='A framework for easily creating beautiful presentations using HTML'> 
+        <meta name='author' content='Hakim El Hattab'>
+        <meta name='apple-mobile-web-app-capable' content='yes'>
+        <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui'> 
+        {% block stylesheet %}
+        <link rel="stylesheet" href="/packages/reveal.js/css/reveal.css">
+        <link rel="stylesheet" href="/packages/reveal.js/css/theme/black.css" id="theme">
+        <link rel="stylesheet" href="/packages/reveal.js/lib/css/zenburn.css">
+{#      <link rel="stylesheet" href="/packages/reveal.js/lib/css/normal.css">#}
+ {% endblock %}   
+ <style>
+/*test*/
+/*pre,code{
+    height:100% !important;
+}*/
+
+pre{
+    /*height:100% !important;*/
+    overflow:hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    box-shadow:none !important;
+}
+pre code{
+    font-size:2em !important;
+    line-height:1.1em !important;
+/*    position: absolute; 
+    top: 50%;
+    transform: translateY(-50%);*/
+    /* display: block; */
+    width: 100%;
+    /* height:auto !important;*/
+ }
+ code{
+     height:auto !important;
+ }
+section{
+/*    top:auto !important; */
+    /* height:90% !important; */
+}
+p{
+    /*font-size:70px;*/
+    text-align:left;
+    text-indent:2em;
+}
+ </style>
+    </head>
+    <body>     
+        
+       {% block content %}
+           <div class="page-container slide-container"
+             data-resource="{{ _resource | json_encode | raw | escape }}"
+             data-resource-node="{{ _resource.resourceNode | api_serialize | json_encode | raw | escape }}"
+             data-mkppt="{{ mkppt | api_serialize | json_encode | raw | escape }}"
+             >
+           </div>
+        <div  class="reveal">
+            <div id="md-reveal-slides" class="slides">
+                {{ mkppt.content | raw }}
+            </div>
+        </div>
+        {% endblock %}    
+        
+      {% block javascripts %}
+     
+         <script>
+{#            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match(/print-pdf/gi) ? 'href="https://lms.mindme.com.cn/packages/reveal.js/css/print/pdf.css' : 'href="https://lms.mindme.com.cn/packages/reveal.js/css/print/paper.css';
+            document.getElementsByTagName('head')[0].appendChild(link);#}
+        </script>
+            
+        <script src="/packages/reveal.js/lib/js/head.min.js"></script>
+        <script src="/packages/reveal.js/js/reveal.js"></script>
+        <script>
+  
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+                transition: 'slide',
+                dependencies: [
+                    {src: 'https://lms.mindme.com.cn/packages/reveal.js/lib/js/classList.js', condition: function () {
+                            return !document.body.classList;
+                        }},
+                    {src: 'https://lms.mindme.com.cn/packages/reveal.js/plugin/markdown/marked.js', condition: function () {
+                            return !!document.querySelector('[data-markdown]');
+                        }},
+                    {src: 'https://lms.mindme.com.cn/packages/reveal.js/plugin/markdown/markdown.js', condition: function () {
+                            return !!document.querySelector('[data-markdown]');
+                        }},
+                    {src: 'https://lms.mindme.com.cn/packages/reveal.js/plugin/highlight/highlight.js', async: true, callback: function () {
+                            hljs.initHighlightingOnLoad();
+                        }},
+                    {src: 'https://lms.mindme.com.cn/packages/reveal.js/plugin/search/search.js', async: true},
+                    {src: 'https://lms.mindme.com.cn/packages/reveal.js/plugin/zoom-js/zoom.js', async: true},
+                    {src: 'https://lms.mindme.com.cn/packages/reveal.js/plugin/notes/notes.js', async: true},
+                    {src: 'https://lms.mindme.com.cn/packages/reveal.js/plugin/menu/menu.js'}
+                ],
+                menu: {
+                    side: 'left',
+                    width: 'normal',
+                    numbers: false,
+                    titleSelector: 'h1, h2, h3, h4, h5, h6',
+                    useTextContentForMissingTitles: false,
+                    hideMissingTitles: false,
+                    markers: true,
+                    custom: false,
+                    themes: true,
+                    themesPath: 'https://lms.mindme.com.cn/packages/reveal.js/css/theme/',
+                    transitions: true,
+                    openButton: true,
+                    openSlideNumber: false,
+                    keyboard: true,
+                    sticky: false,
+                    autoOpen: true,
+                    delayInit: false,
+                    openOnInit: false,
+                    loadIcons: true
+                }
+            });
+        
+        </script>     
+      {% endblock %}  
+    </body>
+</html>

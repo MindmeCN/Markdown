@@ -79,7 +79,7 @@ class MkpptManager
 
     public function getLastContentRevision(Mkppt $mkppt)
     {
-        $rvmkpptRepo = $this->om->getRepository('MindmecnMarkdownBundle:Revision');
+        $rvmkpptRepo = $this->om->getRepository('MindmecnMarkdownBundle:Rvmkppt');
 
         return $rvmkpptRepo->getLastRevision($mkppt)->getContent();
     }
@@ -93,27 +93,50 @@ class MkpptManager
 	$rvmkppt->setContent($content);
 	$rvmkppt->setHtmlcontent($htmlcontent);
         $rvmkppt->setUser($user);
-        $rvmkppt->setMarkdown($mkppt);
+        $rvmkppt->setMkppt($mkppt);
         $rvmkppt->setVersion($version);
         $mkppt->setVersion($version);
         $this->om->persist($rvmkppt);
         $this->om->persist($mkppt);
         $this->om->flush();
          
-
+   
+  
         $workspace = $mkppt->getResourceNode()->getWorkspace();
+        
         $usersToNotify = $workspace ?
             $this->userManager->getUsersByWorkspaces([$workspace], null, null, false) :
             [];
-        $event = new LogEditResourceMarkdownEvent($mkppt->getResourceNode(), $usersToNotify);
+        $event = new LogEditResourceMkpptEvent($mkppt->getResourceNode(), $usersToNotify);
         $this->eventDispatcher->dispatch('log', $event);
 
         return $rvmkppt;
     }
 
    
+     /**
+     * Get mkppt by its ID or UUID.
+     *
+     * @param int
+     *
+     * @return Mkppt
+     */
+    public function getMkpptById($id)
+    {   
+        
+       if (preg_match('/^\d+$/', $id)) {
+           
+            $node = $this->om->getRepository("ClarolineCoreBundle:Resource\ResourceNode")->findOneBy(['id' => $id]);
+        } else{
+           
+            $node = $this->om->getRepository("ClarolineCoreBundle:Resource\ResourceNode")->findOneBy([
+                'uuid' => $id,
+            ]);
+        }
 
-
-
+        $mkppt = $this->om->getRepository("MindmecnMarkdownBundle:Mkppt")->findOneBy(['resourceNode' => $node]);
+        
+        return $mkppt;
+    }
 
 }

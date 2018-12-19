@@ -42,7 +42,7 @@ class MknoteSerializer
 
     public function getSchema()
     {
-        return '#/mindme/markdown-bundle/mknotedown.json';
+        return '#/mindmecn/markdown-bundle/mknote.json';
     }
 
     /**

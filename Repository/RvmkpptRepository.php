@@ -12,7 +12,7 @@
 namespace Mindmecn\MarkdownBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Mindmecn\MarkdownBundle\Entity\Mkppt
+use Mindmecn\MarkdownBundle\Entity\Mkppt;
 
 class RvmkpptRepository extends EntityRepository
 {
@@ -23,13 +23,13 @@ class RvmkpptRepository extends EntityRepository
      *
      * @return Rvmkppt
      */
-    public function getLastRvmkppt(Mkppt $mkppt)
+    public function getLastRevision(Mkppt $mkppt)
     {
         $dql = "
             SELECT r FROM Mindmecn\MarkdownBundle\Entity\Rvmkppt r
             JOIN r.mkppt t2
             WHERE r.version = (SELECT MAX(r2.version) FROM Mindmecn\MarkdownBundle\Entity\Rvmkppt r2
-            JOIN r2.mkppt t WHERE t.id = {$markdown->getId()})
+            JOIN r2.mkppt t WHERE t.id = {$mkppt->getId()})
             and t2.id = {$mkppt->getId()}
         ";
 	    $query = $this->_em->createQuery($dql);

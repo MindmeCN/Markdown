@@ -42,7 +42,7 @@ class MktemplateSerializer
 
     public function getSchema()
     {
-        return '#/mindme/markdown-bundle/mktemplatedown.json';
+        return '#/mindmecn/markdown-bundle/mktemplate.json';
     }
 
     /**

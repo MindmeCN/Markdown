@@ -3,7 +3,7 @@ import React, {Component} from 'react'
         import $ from 'jquery'
         import {PropTypes as T} from 'prop-types'
         import {connect} from 'react-redux'
-        import {trans} from '#/main/core/translation'
+        import {trans} from '#/main/app/intl/translation'
         import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar'
         import {Button} from '#/main/app/action/components/button'
         
@@ -15,22 +15,18 @@ import React, {Component} from 'react'
         import {selectors as resourceSelectors} from '#/main/core/resource/store'
         import {Markdown as MarkdownTypes} from '&/mindmecn/markdown-bundle/resources/markdown/prop-types'
         //import Editor from 'tui-editor/dist/tui-editor-Editor-all.min.js'
-        import Editor from '&/mindmecn/markdown-bundle/../public/js/tuieditor/tui-editor-Editor-all.min.js'
-
-        //import 'tui-editor/dist/codemirror.css'
-        //import 'tui-editor/dist/github.css'        
-       // import 'tui-editor/dist/tui-editor.css'
-       /// import 'tui-editor/dist/tui-editor-contents.css'
-        //import 'tui-editor/dist/tui-color-picker.css'
-        //import 'tui-editor/dist/tui-chart.css'
+        import Editor from '&/mindmecn/markdown-bundle/../public/js/tuiedit/tui-editor-Editor-all.min.js'
         import {selectors} from '&/mindmecn/markdown-bundle/resources/markdown/editor/store'
         
              
 class MkEditComponent extends React.Component{
    constructor(props){
            super(props);    
-         this.DOMHandle = this.DOMHandle.bind(this);  
    }
+   
+ componentWillUnmount(){
+         $(Editor.getInstances()).remove ;
+     }
      
  componentDidMount(){ 
           let editor = new Editor({
@@ -42,23 +38,10 @@ class MkEditComponent extends React.Component{
                  useCommandShortcut: true,
                  exts: ['scrollSync', 'colorSyntax', 'uml', 'chart', 'mark', 'table']           
            }); 
-           
-       //  this.setState({ editor }) ;   
-        // this.props.markdown.content=this.state.editor.getValue() ;
-        
-        //console.log(editor);
-        //console.log(Editor);
-        //console.log($(Editor.getInstances()).get(0).getValue())
-              
-         $("#editSection").on('DOMSubtreeModified', this.DOMHandle)   ;    
+            
      }
-  
-     DOMHandle(){ 
-       this.setState(preState => ({
-       markdown: Object.assign({}, preState.markdown, {content: $(Editor.getInstances()).get(0).getValue()})
-      })) 
-      this.props.markdown.content=$(Editor.getInstances()).get(0).getValue() 
-   }
+     
+ 
       
   render() {
   return (
@@ -92,6 +75,16 @@ class MkEditComponent extends React.Component{
           type={CALLBACK_BUTTON}
           className="btn"
              callback={() => {
+              
+               let  varContent= $(Editor.getInstances()).get(0).getValue();
+               let  varHtmlcontent = $(Editor.getInstances()).get(0).getHtml();
+               this.setState(preState => ({
+                     markdown:Object.assign({}, preState.markdown, {content: 'varContent'}),
+                     markdown:Object.assign({}, preState.markdown, {htmlcontent: 'varHtmlcontent'})
+                 })) 
+               
+                   this.props.markdown.content=varContent ;
+                   this.props.markdown.htmlcontent=varHtmlcontent;
                    this.props.saveForm(this.props.markdown.id)
                }} />
               <Button

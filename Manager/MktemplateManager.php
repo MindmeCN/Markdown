@@ -79,7 +79,7 @@ class MktemplateManager
 
     public function getLastContentRevision(Mktemplate $mktemplate)
     {
-        $rvmktemplateRepo = $this->om->getRepository('MindmecnMarkdownBundle:Revision');
+        $rvmktemplateRepo = $this->om->getRepository('MindmecnMarkdownBundle:Rvmktemplate');
 
         return $rvmktemplateRepo->getLastRevision($mktemplate)->getContent();
     }
@@ -93,7 +93,7 @@ class MktemplateManager
 	$rvmktemplate->setContent($content);
 	$rvmktemplate->setHtmlcontent($htmlcontent);
         $rvmktemplate->setUser($user);
-        $rvmktemplate->setMarkdown($mktemplate);
+        $rvmktemplate->setMktemplate($mktemplate);
         $rvmktemplate->setVersion($version);
         $mktemplate->setVersion($version);
         $this->om->persist($rvmktemplate);
@@ -105,7 +105,7 @@ class MktemplateManager
         $usersToNotify = $workspace ?
             $this->userManager->getUsersByWorkspaces([$workspace], null, null, false) :
             [];
-        $event = new LogEditResourceMarkdownEvent($mktemplate->getResourceNode(), $usersToNotify);
+        $event = new LogEditResourceMktemplateEventEvent($mktemplate->getResourceNode(), $usersToNotify);
         $this->eventDispatcher->dispatch('log', $event);
 
         return $rvmktemplate;

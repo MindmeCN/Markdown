@@ -42,7 +42,7 @@ class MarkdownSerializer
 
     public function getSchema()
     {
-        return '#/mindme/markdown-bundle/markdown.json';
+        return '#/mindmecn/markdown-bundle/markdown.json';
     }
 
     /**

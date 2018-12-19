@@ -6,7 +6,7 @@ import React, {Component} from 'react'
         import {connect} from 'react-redux'
 
         //import Editor from 'tui-editor/dist/tui-editor-Editor-all.min.js'
-        import Editor from '&/mindmecn/markdown-bundle/../public/js/tuieditor/tui-editor-Editor-all.min.js'
+        import Editor from '&/mindmecn/markdown-bundle/../public/js/tuiedit/tui-editor-Editor-all.min.js'
 
         //import 'tui-editor/dist/tui-editor.css'
         //import 'tui-editor/dist/tui-editor-contents.css'

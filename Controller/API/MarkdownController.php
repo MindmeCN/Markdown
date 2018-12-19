@@ -41,6 +41,7 @@ class MarkdownController extends AbstractCrudController
     public function getContentAction(ResourceNode $resourceNode)
     {
         /** @var Markdown $markdown */
+         file_put_contents('/tmp/mylogrrrr.log', 111);
         $markdown = $this->om->getRepository($resourceNode->getClass())->findOneBy([
             'resourceNode' => $resourceNode,
         ]);

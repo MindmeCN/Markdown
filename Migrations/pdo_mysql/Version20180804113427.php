@@ -19,7 +19,6 @@ class Version20180804113427 extends AbstractMigration
                 id INT AUTO_INCREMENT NOT NULL, 
                 version INT NOT NULL, 
                 resourceNode_id INT DEFAULT NULL, 
-                default_mode int default 0,
                 UNIQUE INDEX UNIQ_66D008DEB87FAB32 (resourceNode_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB

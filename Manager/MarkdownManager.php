@@ -114,9 +114,30 @@ class MarkdownManager
         return $revision;
     }
 
-   
+   /**
+     * Get mkppt by its ID or UUID.
+     *
+     * @param int
+     *
+     * @return Mkppt
+     */
+    public function getMarkdownById($id)
+    {   
+        
+       if (preg_match('/^\d+$/', $id)) {
+           
+            $node = $this->om->getRepository("ClarolineCoreBundle:Resource\ResourceNode")->findOneBy(['id' => $id]);
+        } else{
+           
+            $node = $this->om->getRepository("ClarolineCoreBundle:Resource\ResourceNode")->findOneBy([
+                'uuid' => $id,
+            ]);
+        }
+        
 
-
-
+           $markdown = $this->om->getRepository("MindmecnMarkdownBundle:Markdown")->findOneBy(['resourceNode' => $node]);
+                  
+        return $markdown;
+    }
 
 }

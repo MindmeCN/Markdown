@@ -5,12 +5,18 @@ import classes from 'classnames'
 
 import {selectors} from '&/mindmecn/markdown-bundle/resources/mklab/store'
 import {Mklab as MklabTypes} from '&/mindmecn/markdown-bundle/resources/mklab/prop-types'
-import {MkView} from '&/mindmecn/markdown-bundle/resources/mklab/player/components/mkview'
+import {MkLabPlay} from '&/mindmecn/markdown-bundle/resources/mklab/player/components/mklabplay'
+import {currentUser} from '#/main/core/user/current'
+
+
 
 const PlayerComponent = props =>
- <div className={classes('mklab_content')}>
- <MkView/>
- </div>
+<div className={classes('mklab_content')}>
+           <MkLabPlay/>
+  </div>
+    
+
+
 
 PlayerComponent.propTypes = {
   mklab: T.shape(MklabTypes.propTypes).isRequired

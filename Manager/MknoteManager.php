@@ -79,7 +79,7 @@ class MknoteManager
 
     public function getLastContentRevision(Mknote $mknote)
     {
-        $rvmknoteRepo = $this->om->getRepository('MindmecnMarkdownBundle:Revision');
+        $rvmknoteRepo = $this->om->getRepository('MindmecnMarkdownBundle:Rvmknote');
 
         return $rvmknoteRepo->getLastRevision($mknote)->getContent();
     }
@@ -93,7 +93,7 @@ class MknoteManager
 	$rvmknote->setContent($content);
 	$rvmknote->setHtmlcontent($htmlcontent);
         $rvmknote->setUser($user);
-        $rvmknote->setMarkdown($mknote);
+        $rvmknote->setMknote($mknote);
         $rvmknote->setVersion($version);
         $mknote->setVersion($version);
         $this->om->persist($rvmknote);
@@ -105,15 +105,10 @@ class MknoteManager
         $usersToNotify = $workspace ?
             $this->userManager->getUsersByWorkspaces([$workspace], null, null, false) :
             [];
-        $event = new LogEditResourceMarkdownEvent($mknote->getResourceNode(), $usersToNotify);
+        $event = new LogEditResourceMknoteEvent($mknote->getResourceNode(), $usersToNotify);
         $this->eventDispatcher->dispatch('log', $event);
 
         return $rvmknote;
     }
-
-   
-
-
-
 
 }

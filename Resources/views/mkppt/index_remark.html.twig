@@ -1,0 +1,25 @@
+{% import 'ClarolineCoreBundle::macros.html.twig' as macros %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv='Content-Type' content='textml; charset=UTF-8'/> 
+        <title>江苏晓创教育</title>               
+        <style type='text/css'> 
+            @import url(/mdqh/markdown/css/pptstyle1.css); 
+            @import url(/mdqh/markdown/css/pptstyle2.css); 
+            @import url(/mdqh/markdown/css/pptstyle3.css); 
+            @import url(/mdqh/markdown/css/remark-others.css); 
+        </style>
+    </head>
+    <body>
+        <div id="source" class="page-container mkppt-content"
+             data-resource-node="{{ _resource.resourceNode | api_serialize | json_encode | raw | escape }}"
+             data-mkppt="{{ mkppt | api_serialize | json_encode | raw | escape }}"
+             >{{ mkppt.content  }}
+        </div>             
+       <script src='/mdqh/markdown/js/remark-latest.min.js'></script> 
+        <script>var hljs = remark.highlighter.engine;</script> 
+        <script src='/mdqh/markdown/js/remark.language.js'></script> 
+        <script>var slideshow = remark.create({ highlightStyle: 'monokai', highlightLanguage: 'remark', click: true ,  ratio: '4:3' , highlightLines: true });</script>
+    </body>
+</html>

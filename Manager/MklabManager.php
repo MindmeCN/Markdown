@@ -79,7 +79,7 @@ class MklabManager
 
     public function getLastContentRevision( Mklab $mklab)
     {
-        $rvmklabRepo = $this->om->getRepository('MindmecnMarkdownBundle:Revision');
+        $rvmklabRepo = $this->om->getRepository('MindmecnMarkdownBundle:Rvmklab');
 
         return $rvmklabRepo->getLastRevision($mklab)->getContent();
     }
@@ -93,7 +93,7 @@ class MklabManager
 	$rvmklab->setContent($content);
 	$rvmklab->setHtmlcontent($htmlcontent);
         $rvmklab->setUser($user);
-        $rvmklab->setMarkdown($mklab);
+        $rvmklab->setMklab($mklab);
         $rvmklab->setVersion($version);
         $mklab->setVersion($version);
         $this->om->persist($rvmklab);
@@ -105,15 +105,33 @@ class MklabManager
         $usersToNotify = $workspace ?
             $this->userManager->getUsersByWorkspaces([$workspace], null, null, false) :
             [];
-        $event = new LogEditResourceMarkdownEvent($mklab->getResourceNode(), $usersToNotify);
+        $event = new LogEditResourceMklabEvent($mklab->getResourceNode(), $usersToNotify);
         $this->eventDispatcher->dispatch('log', $event);
 
         return $rvmklab;
     }
 
-   
-
-
-
-
+     /**
+     * Get mklab by its ID or UUID.
+     *
+     * @param int
+     *
+     * @return Mklab
+     */
+    public function getMklabById($id)
+    {   
+        
+       if (preg_match('/^\d+$/', $id)) {
+           
+            $node = $this->om->getRepository("ClarolineCoreBundle:Resource\ResourceNode")->findOneBy(['id' => $id]);
+        } else{
+           
+            $node = $this->om->getRepository("ClarolineCoreBundle:Resource\ResourceNode")->findOneBy([
+                'uuid' => $id,
+            ]);
+        }
+              
+        $mklab = $this->om->getRepository("MindmecnMarkdownBundle:Mklab")->findOneBy(['resourceNode' => $node]);    
+        return $mklab;
+    }
 }

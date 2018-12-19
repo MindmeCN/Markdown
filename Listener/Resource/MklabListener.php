@@ -83,14 +83,18 @@ class MklabListener
      */
     public function open(OpenResourceEvent $event)
     {
-        $mklab = $event->getResource();
+        error_log('ddddddddddddddddd',3,'/tmp/mytesddd.log',true);
+        $resource = $event->getResource();
         
+        error_log(getResourceNode(),3,'/tmp/mytesddd.log',true);
+        
+        $workspace = $resource->getResourceNode()->getWorkspace();
         
         $content = $this->templating->render(
-            'MindmecnMarkdownBundle:mklab:index.html.twig',
+            'MindmecnMarkdownBundle:mklab:open.html.twig',
             [
-                'mklab' => $mklab,
-                '_resource' => $mklab,
+                 '_resource' => $resource,
+                'mklab' => $this->serializer->serialize($resource)         
             ]
         );
 

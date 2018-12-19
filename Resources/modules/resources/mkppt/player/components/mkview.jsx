@@ -1,55 +1,62 @@
 
 import React, {Component} from 'react'
-        import ReactDOM from 'react-dom';
-        import $ from 'jquery'
-        import {PropTypes as T} from 'prop-types'
-        import {connect} from 'react-redux'
+import ReactDOM from 'react-dom'
+import $ from 'jquery'
+import {PropTypes as T} from 'prop-types'
+import {connect} from 'react-redux'
+import {selectors as resourceSelectors} from '#/main/core/resource/store'
 
-        //import Editor from 'tui-editor/dist/tui-editor-Editor-all.min.js'
-        import Editor from '&/mindmecn/markdown-bundle/../public/js/tuieditor/tui-editor-Editor-all.min.js'
+import {Mkppt as MkpptTypes} from '&/mindmecn/markdown-bundle/resources/mkppt/prop-types'
 
-        //import 'tui-editor/dist/tui-editor.css'
-        //import 'tui-editor/dist/tui-editor-contents.css'
-        //  import 'tui-editor/dist/codemirror.css'
-        //import 'tui-editor/dist/github.css'
+import {selectors} from '&/mindmecn/markdown-bundle/resources/mkppt/store'
 
 
-        import {selectors} from '&/mindmecn/markdown-bundle/resources/mkppt/store'
-
-        class MkViewComponent extends React.Component{
-        constructor(props){
+class MkViewComponent extends React.Component {
+    constructor(props) {
         super(props);
-        }
+    }
 
-        componentDidMount(){
-            
-        let editor = new Editor.factory({
-            el: document.querySelector('#editSection'),
-            viewer: true,   
-            initialValue: this.props.mkppt.content,
-            height: window.innerHeight - 20,
-            });
-        }
+ render() {
         
-    render() {
-        return (
-                <div id="editSection"></div>
-                )
+ let   iframeSrc = '/markdown/mkppt/slide/' + this.props.resourceNodeId + '/0'
+  console.log(iframeSrc)
+     
+    
+        return(
+                <iframe id ="iframe-markdown-ppt" 
+                        name ="iframe-markdown-ppt" 
+                        src = { iframeSrc }
+                        onLoad={() => {
+                        const obj = ReactDOM.findDOMNode(this.refs.iframe);
+                        var varIframe = window.frames['iframe-markdown-ppt'];
+                      //  varIframe.document.open()
+                      //  varIframe.document.write(iframeContent2)
+                      //  varIframe.document.close()
+                                    }}
+                        style={{ position: 'absolute', top: '0', left: '0', width: '100%',  height: '100%'}}
+                        marginwidth="0"
+                        marginheight="0"
+                        ref="iframe" 
+                        frameborder="no" 
+                        border="0"
+                        scrolling="no" 
+                        allowtransparency="yes" 
+                        />)
     }
 }
 
+
 MkViewComponent.propTypes = {
-content: T.string.isRequired
-        }
+  mkppt: T.shape(MkpptTypes.propTypes).isRequired
+}
 
 const MkView = connect(
         state => ({
-        mkppt: selectors.mkppt(state)
-        })
-        )(MkViewComponent)
+       mkppt: selectors.mkppt(state),
+       resourceNodeId: resourceSelectors.resourceNode(state).id,
+            })
+)(MkViewComponent)
 
-        export {
-        MkView
-                }
-
-
+export {
+MkView
+}

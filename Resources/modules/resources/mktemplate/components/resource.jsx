@@ -5,7 +5,7 @@ import {ResourcePage} from '#/main/core/resource/containers/page'
 
 
 import {Player} from '&/mindmecn/markdown-bundle/resources/mktemplate/player/components/player'
-import {Editor} from '&/mindmecn/markdown-bundle/resources/markdown/editor/components/editor'
+import {Editor} from '&/mindmecn/markdown-bundle/resources/mktemplate/editor/components/editor'
 
 const MktemplateResource = () =>
    <ResourcePage>

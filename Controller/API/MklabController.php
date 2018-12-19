@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @ApiMeta(
- *     class="Mindmecn\MarkdownBundle\Entity\Markdown",
+ *     class="Mindmecn\MarkdownBundle\Entity\Mklab",
  *     ignore={"create", "exist", "list", "copyBulk", "deleteBulk", "schema", "find", "get"}
  * )
  * @EXT\Route("resource_mklab")

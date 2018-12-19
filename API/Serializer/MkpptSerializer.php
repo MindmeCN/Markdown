@@ -42,7 +42,7 @@ class MkpptSerializer
 
     public function getSchema()
     {
-        return '#/mindme/markdown-bundle/mkpptdown.json';
+        return '#/mindmecn/markdown-bundle/mkppt.json';
     }
 
     /**

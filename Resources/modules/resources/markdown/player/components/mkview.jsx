@@ -5,14 +5,7 @@ import React, {Component} from 'react'
         import {PropTypes as T} from 'prop-types'
         import {connect} from 'react-redux'
 
-        import Editor from '&/mindmecn/markdown-bundle/../public/js/tuieditor/tui-editor-Editor-all.min.js'
-
-        //import 'tui-editor/dist/tui-editor.css'
-        //import 'tui-editor/dist/tui-editor-contents.css'
-        //import 'tui-editor/dist/codemirror.css'
-        //import 'tui-editor/dist/github.css'
-
-
+        import Editor from '&/mindmecn/markdown-bundle/../public/js/tuiedit/tui-editor-Editor-all.min.js'
         import {selectors} from '&/mindmecn/markdown-bundle/resources/markdown/store'
 
         class MkViewComponent extends React.Component{

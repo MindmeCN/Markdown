@@ -8,25 +8,30 @@ plugin:
  #           is_exportable: true
             icon: markdown.png
   
-        -   class: Mindmecn\MarkdownBundle\Entity\Markdown
+        -   class: Mindmecn\MarkdownBundle\Entity\Mkppt
             name: mkppt
             tags: [content,lab]
  #           is_exportable: false
             icon: mkppt.png
+            actions:
+              - name: slide
+                decoder: slide
+                group: management
+                api: [get]
             
-        -   class: Mindmecn\MarkdownBundle\Entity\Markdown
+        -   class: Mindmecn\MarkdownBundle\Entity\Mknote
             name: mknote
             tags: [content,lab]
 #            is_exportable: false
             icon: mknote.png
             
-        -   class: Mindmecn\MarkdownBundle\Entity\Markdown
+        -   class: Mindmecn\MarkdownBundle\Entity\Mklab
             name: mklab
             tags: [content,lab]
 #            is_exportable: false
             icon: mklab.png
             
-        -   class: Mindmecn\MarkdownBundle\Entity\Markdown
+        -   class: Mindmecn\MarkdownBundle\Entity\Mktemplate
             name: Mktemplate
             tags: [content,lab]
 #            is_exportable: false

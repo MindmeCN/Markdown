@@ -4,36 +4,20 @@ import React, {Component} from 'react'
         import $ from 'jquery'
         import {PropTypes as T} from 'prop-types'
         import {connect} from 'react-redux'
-
-        //import Editor from 'tui-editor/dist/tui-editor-Editor-all.min.js'
-        import Editor from '&/mindmecn/markdown-bundle/../public/js/tuieditor/tui-editor-Editor-all.min.js'
-
-        //import 'tui-editor/dist/tui-editor.css'
-        //import 'tui-editor/dist/tui-editor-contents.css'
-        //  import 'tui-editor/dist/codemirror.css'
-        //import 'tui-editor/dist/github.css'
-
-
+        import { Box } from 'grid-styled'
         import {selectors} from '&/mindmecn/markdown-bundle/resources/mktemplate/store'
 
-        class MkViewComponent extends React.Component{
+ class MkViewComponent extends React.Component{
         constructor(props){
         super(props);
         }
 
-        componentDidMount(){
-            
-        let editor = new Editor.factory({
-            el: document.querySelector('#editSection'),
-            viewer: true,   
-            initialValue: this.props.mktemplate.content,
-            height: window.innerHeight - 20,
-            });
-        }
         
     render() {
         return (
-                <div id="editSection"></div>
+                <Box color='tomato'>
+                    Hello
+                </Box>
                 )
     }
 }
